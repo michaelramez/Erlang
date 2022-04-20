@@ -39,20 +39,20 @@ update_subscriber(Subscriber) ->
 check_and_update(_, []) ->
     io:format("Subscriber does not exist~n");
 
-check_and_update(Subsciber, _) ->
-    mnesia:dirty_write(subscriber, Subsciber),
+check_and_update(Subscriber, _) ->
+    mnesia:dirty_write(subscriber, Subscriber),
     io:format("Successfully updated~n").
 
 delete_subscriber(SubscriberID) ->
     SubscriberFromDB = lookup_subscriber(SubscriberID),
-    check_and_delete(SubscriberID, SubscriberFromDB).
+    check_and_delete(SubscriberFromDB).
 
-check_and_delete(_, []) ->
+check_and_delete([]) ->
     io:format("Subscriber does not exist~n");
 
-check_and_delete(SubscriberID, _) ->
-    mnesia:dirty_delete(SubscriberID),
-    io:format("Successfully deleted").
+check_and_delete([Subscriber]) ->
+    mnesia:dirty_delete(subscriber, Subscriber#subscriber.sub_id),
+    io:format("Successfully deleted~n").
 
 lookup_subscriber(SubscriberID) ->
     mnesia:dirty_read(subscriber, SubscriberID).
