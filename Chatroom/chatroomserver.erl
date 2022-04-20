@@ -64,7 +64,8 @@ client_handler(Socket, Username) ->
             client_handler(Socket, Username);
 
         {tcp_closed, Socket} ->
-            io:format("Handler socket closed ~n")
+            io:format("Handler socket closed ~n"),
+            clients ! {delete, Username}
     end.
             
 
@@ -76,6 +77,4 @@ handle_client_request({send, Msg, OtherUsername}, Username) ->
 handle_client_request(viewonline, Username) ->
             clients ! {viewonline, Username}.
 
-% handle_client_request({broadcast, Msg}, Username) ->
-%             io:format("Broadcasting ~p from ~p~n", [Msg, Username]).
 
